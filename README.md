@@ -9,7 +9,7 @@ Check out the examples for full explanation.
 
 The success response looks like:
 
-```json
+```json5
 {
     "status": 200,
     "content": C, // C should implement serde::Serialize
@@ -27,7 +27,7 @@ JsonResponse::with_content(content).meta(meta)
 
 The error response looks like:
 
-```json
+```json5
 {
     "status": 404,
     "code": "error code here",
