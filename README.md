@@ -1,7 +1,7 @@
 # Json-resp
 
 This crate provides a success and an error response for Apis, with utilities and macros to ease the generation
-of responses and openapi docs(with `openapi` feature).
+of responses and openapi docs(with `openapi` feature).(Only axum supported right now)
 
 Check out the examples for full explanation.
 
