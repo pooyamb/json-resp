@@ -41,10 +41,11 @@ And can be produces with a derive macro, openapi docs will be generated too.
 ```rust
 #[derive(JsonError)]
 enum MyAppErrors{
-    #[json_error(request, status=404, code="does-not-exist", hint="some hint")]
+    // status can be either a number or http::StatusCode
+    #[json_error(request, status=StatusCode::NOT_FOUND, code="does-not-exist", hint="some hint")]
     DoesNotExist,
-    
-    #[json_error(request, status=404, code="does-not-exist")]
+
+    #[json_error(request, status=409, code="does-not-exist")]
     Validation(ValidationErrors),
 
     #[json_error(internal)]
