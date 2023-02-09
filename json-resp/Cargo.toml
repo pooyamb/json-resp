@@ -2,8 +2,16 @@
 authors = ["Pouya M. B. <pooyamb@gmail.com>"]
 name = "json-resp"
 version = "0.1.0"
+
 edition = "2021"
-publish = false
+
+categories = ["web-programming::http-server"]
+description = "A utility to generate easy json response/errors"
+documentation = "https://docs.rs/json-resp"
+keywords = ["web", "json", "response", "axum"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/pooyamb/json-resp/"
 
 [dependencies]
 serde = { version = "1.0.137", features = ["derive"] }
@@ -12,6 +20,7 @@ axum = "0.6"
 
 # Derive: macros
 json-resp-derive = "0.1"
+
 # Derive: log internal errors
 log = { version = "0.4", optional = true }
 

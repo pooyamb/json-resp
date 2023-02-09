@@ -2,7 +2,16 @@
 authors = ["Pouya M. B. <pooyamb@gmail.com>"]
 name = "json-resp-derive"
 version = "0.1.0"
+
 edition = "2021"
+
+categories = ["web-programming::http-server"]
+description = "A utility to generate easy json response/errors"
+documentation = "https://docs.rs/json-resp"
+keywords = ["web", "json", "response", "axum"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/pooyamb/json-resp/"
 
 [lib]
 proc-macro = true
