@@ -67,33 +67,31 @@ where
             .build()
             .into();
 
-        let t_schema = match T::schema() {
-            ("", _) => null.clone(),
-            (name, _) => Ref::from_schema_name(name).into(),
+        let obj = ObjectBuilder::new()
+            .property(
+                "status",
+                ObjectBuilder::new()
+                    .schema_type(SchemaType::Integer)
+                    .format(Some(SchemaFormat::KnownFormat(KnownFormat::Int32)))
+                    .example(Some(200.into())),
+            )
+            .required("status");
+
+        let obj = match T::schema() {
+            ("", _) => obj.property("content", null.clone()),
+            (name, _) => obj
+                .property("content", RefOr::Ref(Ref::from_schema_name(name)))
+                .required("content"),
         };
 
-        let m_schema = match M::schema() {
-            ("", _) => null,
-            (name, _) => Ref::from_schema_name(name).into(),
+        let obj = match M::schema() {
+            ("", _) => obj.property("meta", null.clone()),
+            (name, _) => obj
+                .property("meta", RefOr::Ref(Ref::from_schema_name(name)))
+                .required("meta"),
         };
 
-        (
-            "JsonResponse",
-            ObjectBuilder::new()
-                .property(
-                    "status",
-                    ObjectBuilder::new()
-                        .schema_type(SchemaType::Integer)
-                        .format(Some(SchemaFormat::KnownFormat(KnownFormat::Int32)))
-                        .example(Some(200.into())),
-                )
-                .required("status")
-                .property("content", t_schema)
-                .required("content")
-                .property("meta", m_schema)
-                .required("meta")
-                .into(),
-        )
+        ("JsonResponse", obj.into())
     }
 }
 
