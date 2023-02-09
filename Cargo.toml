@@ -1,0 +1,7 @@
+[workspace]
+members = ["json-resp", "json-resp-derive", "examples/*"]
+resolver = "2"
+
+[patch.crates-io]
+json-resp = { path = "./json-resp" }
+json-resp-derive = { path = "./json-resp-derive" }

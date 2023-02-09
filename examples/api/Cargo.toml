@@ -1,0 +1,16 @@
+[package]
+authors = ["Pouya M. B. <pooyamb@gmail.com>"]
+edition = "2021"
+name = "api"
+version = "0.1.0"
+resolver = "2"
+
+[dependencies]
+json-resp = "0.1.0"
+
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+axum = "0.6"
+
+[[example]]
+name = "api"
+path = "./src/app.rs"

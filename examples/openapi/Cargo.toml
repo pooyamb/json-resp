@@ -1,0 +1,20 @@
+[package]
+authors = ["Pouya M. B. <pooyamb@gmail.com>"]
+edition = "2021"
+name = "openapi"
+version = "0.1.0"
+resolver = "2"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+json-resp = { version = "0.1.0", features = ["openapi"] }
+
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+axum = "0.6"
+
+utoipa = { version = "3", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "3", features = ["axum"] }
+
+[[example]]
+name = "openapi"
+path = "./src/app.rs"
