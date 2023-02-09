@@ -208,6 +208,15 @@ impl JsonError {
                 }
             }
             Self::InternalError { naive, variant } => {
+                let response = quote! {
+                    ::json_resp::JsonError{
+                        status: StatusCode::INTERNAL_SERVER_ERROR,
+                        code: #internal_error_code.into(),
+                        content: (),
+                        ..::json_resp::JsonError::default()
+                    }.into_response()
+                };
+
                 #[cfg(feature = "log")]
                 let log_error = if *naive {
                     quote! {
@@ -222,7 +231,7 @@ impl JsonError {
                     quote! {
                         /// Log the error
                         ::json_resp::__private::log_error!(
-                            "{}::{}",
+                            "{}::{} {}",
                             stringify!(#type_ident),
                             stringify!(#variant),
                             err
@@ -232,15 +241,19 @@ impl JsonError {
                 #[cfg(not(feature = "log"))]
                 let log_error: Option<TokenStream> = None;
 
-                quote! {
-                    #type_ident::#variant => {
-                        #log_error
-                        ::json_resp::JsonError{
-                            status: StatusCode::INTERNAL_SERVER_ERROR,
-                            code: #internal_error_code.into(),
-                            content: (),
-                            ..::json_resp::JsonError::default()
-                        }.into_response()
+                if *naive {
+                    quote! {
+                        #type_ident::#variant => {
+                            #log_error
+                            #response
+                        }
+                    }
+                } else {
+                    quote! {
+                        #type_ident::#variant(err) => {
+                            #log_error
+                            #response
+                        }
                     }
                 }
             }
