@@ -1,5 +1,6 @@
 use axum::{extract::Path, http::StatusCode, response::IntoResponse, routing::get, Router};
 use schemas::HelloResponse;
+use serde::de::{value, Error};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
@@ -29,8 +30,9 @@ enum AppErrors {
     InternalError,
     
     // Only one InternalError api doc will be generated, no matter how many of them we have
+    // inner error will be logged using log crate(log::error)
     #[json_error(internal)]
-    AnotherInternalError,
+    AnotherInternalError(value::Error),
 }
 
 #[derive(OpenApi)]
@@ -57,7 +59,7 @@ struct AppApi;
 async fn index(Path(name): Path<String>) -> impl IntoResponse {
     match name.as_str() {
         "500" => Err(AppErrors::InternalError),
-        "501" => Err(AppErrors::AnotherInternalError),
+        "501" => Err(AppErrors::AnotherInternalError(value::Error::custom("Error"))),
         "404" => Err(AppErrors::NotFound),
         "4042" => Err(AppErrors::NotFound2),
         "meta" => Ok((
@@ -82,6 +84,8 @@ async fn index(Path(name): Path<String>) -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() {
+    env_logger::init();
+    
     let openapi = AppApi::openapi();
     let openapi = SwaggerUi::new("/docs").url("/docs.json", openapi);
 
