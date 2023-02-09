@@ -254,7 +254,6 @@ impl JsonError {
                 status,
                 code,
                 hint,
-                description,
                 ..
             } => {
                 let status = status.expand_numeric();

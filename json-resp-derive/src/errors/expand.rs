@@ -1,6 +1,6 @@
 use super::types::JsonError;
 use crate::ctxt::Ctxt;
-use proc_macro2::{Ident, Span, TokenStream};
+use proc_macro2::{Ident, TokenStream};
 use quote::{quote, ToTokens, TokenStreamExt};
 use syn::{
     punctuated::Punctuated, token::Comma, Attribute, Data, DataEnum, Expr, ExprAssign, ExprParen,
@@ -50,10 +50,10 @@ fn expand_derive_enum(
         }
     };
 
-    let docs_name = Ident::new(&format!("{}Oai", name), Span::call_site());
-
     #[cfg(feature = "openapi")]
     let gen = {
+        let docs_name = Ident::new(&format!("{}Oai", name), proc_macro2::Span::call_site());
+
         let utoipa_inner = json_errors.into_utoipa_expand();
 
         // Utoipa impls
